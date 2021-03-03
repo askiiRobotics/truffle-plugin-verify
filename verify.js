@@ -128,6 +128,8 @@ const sendVerifyRequest = async (artifact, options) => {
   const encodedConstructorArgs = await fetchConstructorValues(artifact, options)
   const inputJSON = getInputJSON(artifact, options)
 
+  const contractPath = options.useSourcePathToContract ? artifact.sourcePath : artifact.ast.absolutePath 
+
   const postQueries = {
     apikey: options.apiKey,
     module: 'contract',
@@ -135,7 +137,7 @@ const sendVerifyRequest = async (artifact, options) => {
     contractaddress: artifact.networks[`${options.networkId}`].address,
     sourceCode: JSON.stringify(inputJSON),
     codeformat: 'solidity-standard-json-input',
-    contractname: `${artifact.ast.absolutePath}:${artifact.contractName}`,
+    contractname: `${contractPath}:${artifact.contractName}`,
     compilerversion: compilerVersion,
     constructorArguements: encodedConstructorArgs
   }
