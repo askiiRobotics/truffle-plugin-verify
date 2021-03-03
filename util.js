@@ -29,9 +29,10 @@ const normaliseContractPath = (contractPath) => {
   if (process.platform !== 'win32') return contractPath
 
   // If the contract path doesn't start with '/[A-Z]/' it is not a Unixified Windows path
-  if (!contractPath.match(/^\/[A-Z]\//i)) return contractPath
+  if (!contractPath.match(/^\W*(\w+)\//i)) return contractPath
 
-  const driveLetter = contractPath.substring(1, 2)
+  var letterFinder = contractPath.match(/^\W*(\w+)/);
+  const driveLetter = letterFinder[1];
   const normalisedContractPath = path.resolve(`${driveLetter}:/${contractPath.substring(3)}`)
 
   return normalisedContractPath
